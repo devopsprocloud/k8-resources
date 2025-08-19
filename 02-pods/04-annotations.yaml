@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: annotations
+  labels: 
+    course: DevOps 
+    Trainer: PremSagarEri
+  annotations:
+    com.roboshop.training.period: "120 Days"
+    jenkins.url: "https://www.jenkins.com/roboshop/catalogue#45"
+spec:
+# list of containers
+  containers:
+  - name: annotation
+    image: nginx:1.14.2
+    ports:
+    - containerPort: 8081
