@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: label
+  labels: 
+    course: DevOps 
+    Trainer: Prem Sagar Eri
+spec:
+# list of containers
+  containers:
+  - name: label
+    image: nginx:1.14.2
+    ports:
+    - containerPort: 80
