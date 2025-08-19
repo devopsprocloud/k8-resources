@@ -4,7 +4,7 @@ metadata:
   name: label
   labels: 
     course: DevOps 
-    Trainer: Prem Sagar Eri
+    Trainer: PremSagarEri
 spec:
 # list of containers
   containers:
