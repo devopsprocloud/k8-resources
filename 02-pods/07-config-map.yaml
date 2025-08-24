@@ -4,5 +4,4 @@ metadata:
   name: devops-config 
 data: 
   course: DevOps 
-  tainer: Prem 
-  
+  trainer: Prem 
