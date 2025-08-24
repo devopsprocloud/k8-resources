@@ -8,6 +8,7 @@ spec:
     image: nginx 
     ports: 
     - containerPort: 80 
+    ## method 1
     env: 
     - name: course 
       valueFrom: 
@@ -30,6 +31,7 @@ spec:
     image: nginx 
     ports: 
     - containerPort: 80 
+    ## method 2
     envFrom:
     - configMapRef: 
         name: devops-config 
