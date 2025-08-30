@@ -9,6 +9,6 @@ spec:
 # list of containers
   containers:
   - name: label
-    image: nginx:1.14.2
+    image: nginx
     ports:
     - containerPort: 80
