@@ -8,7 +8,7 @@ metadata:
 spec:
   # modify replicas according to your case
   replicas: 3
-  selector: # replica labels 
+  selector: # These labels are used to find the pods
     matchLabels:
       app: nginx 
       tier: frontend

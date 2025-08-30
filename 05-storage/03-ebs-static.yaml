@@ -1,0 +1,65 @@
+# Creating the persistant volume 
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ebs-static-pv
+spec:
+  accessModes:
+  - ReadWriteOnce ## EBS volumes should have only ReadWriteOnce because it is a harddisk
+  capacity:
+    storage: 10Gi
+  csi:
+    driver: ebs.csi.aws.com
+    fsType: ext4
+    volumeHandle: vol-08e00edf790cf8beb
+--- 
+# Claiming the Volume claim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ebs-claim
+spec:
+  storageClassName: "" # Empty string must be explicitly set otherwise default StorageClass will be set
+  volumeName: ebs-static-pv
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+
+--- 
+# Pod definition
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels: 
+    demo: ebs-static
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    volumeMounts:
+    - name: persistent-storage
+      mountPath: /usr/share/nginx/html
+  nodeSelector: 
+    zone: 1d
+  volumes: #Creating the volume from pv claim configuration
+  - name: persistent-storage
+    persistentVolumeClaim:
+      claimName: ebs-claim
+
+--- 
+
+apiVersion: v1 
+kind: Service 
+metadata: 
+  name: ebs-static-pv-loadbalancer
+spec: 
+  type: LoadBalancer
+  selector: 
+   demo: ebs-static 
+  ports:
+  - protocol: TCP 
+    port: 80 #service port 
+    targetPort: 80 #container port 
