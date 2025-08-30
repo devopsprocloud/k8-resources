@@ -1,26 +1,28 @@
-# Creating the persistant volume 
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: ebs-static-pv
+  name: efs-static-pv
 spec:
-  accessModes:
-  - ReadWriteOnce ## EBS volumes should have only ReadWriteOnce because it is a harddisk
   capacity:
-    storage: 10Gi
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ""
+  persistentVolumeReclaimPolicy: Retain
   csi:
-    driver: ebs.csi.aws.com
-    fsType: ext4
-    volumeHandle: vol-08e00edf790cf8beb
---- 
+    driver: efs.csi.aws.com
+    volumeHandle: fs-05b73fcd151fc0950
+---
+
 # Claiming the Volume claim
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: ebs-static-claim
+  name: efs-static-claim
 spec:
   storageClassName: "" # Empty string must be explicitly set otherwise default StorageClass will be set
-  volumeName: ebs-static-pv
+  volumeName: efs-static-pv
   accessModes:
     - ReadWriteOnce
   resources:
@@ -32,12 +34,12 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: nginx-static
+  name: nginx-efs-static
   labels: 
-    demo: ebs-static
+    demo: efs-static
 spec:
   containers:
-  - name: nginx-dynamic
+  - name: nginx-efs-static
     image: nginx
     volumeMounts:
     - name: persistent-storage
@@ -47,18 +49,17 @@ spec:
   volumes: #Creating the volume from pv claim configuration
   - name: persistent-storage
     persistentVolumeClaim:
-      claimName: ebs-static-claim
+      claimName: efs-static-claim
 
 --- 
-
 apiVersion: v1 
 kind: Service 
 metadata: 
-  name: ebs-static-pv-lb
+  name: efs-static-pv-lb
 spec: 
   type: LoadBalancer
   selector: 
-   demo: ebs-static 
+   demo: efs-static 
   ports:
   - protocol: TCP 
     port: 80 #service port 
