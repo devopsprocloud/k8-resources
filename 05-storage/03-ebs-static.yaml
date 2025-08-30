@@ -17,7 +17,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: ebs-claim
+  name: ebs-static-claim
 spec:
   storageClassName: "" # Empty string must be explicitly set otherwise default StorageClass will be set
   volumeName: ebs-static-pv
@@ -32,12 +32,12 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: nginx
+  name: nginx-static
   labels: 
     demo: ebs-static
 spec:
   containers:
-  - name: nginx
+  - name: nginx-dynamic
     image: nginx
     volumeMounts:
     - name: persistent-storage
@@ -47,7 +47,7 @@ spec:
   volumes: #Creating the volume from pv claim configuration
   - name: persistent-storage
     persistentVolumeClaim:
-      claimName: ebs-claim
+      claimName: ebs-static-claim
 
 --- 
 
