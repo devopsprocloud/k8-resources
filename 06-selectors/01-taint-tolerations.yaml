@@ -19,7 +19,7 @@ metadata:
 spec:
 # list of containers
   containers:
-  - name: taint-pod
+  - name: toleration-pod
     image: nginx
     ports:
     - containerPort: 80
@@ -27,3 +27,7 @@ spec:
   - key: "project"
     operator: "Exists"
     effect: "NoSchedule"
+  # - key: "project"
+  #   value: "roboshop"
+  #   operator: "Exists"
+  #   effect: "NoSchedule"
