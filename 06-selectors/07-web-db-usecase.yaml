@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-cache
+spec:
+  selector:
+    matchLabels:
+      app: store
+  replicas: 2 # replica pod2 will not deploy where pod 1 runs as we are using pod anti-affinity, the pod labels doesn't match
+  template:
+    metadata:
+      labels:
+        app: store # Pod labels
+    spec:
+      affinity:
+        podAntiAffinity: # It should not select the node where pod1 is running
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - store
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: redis-server
+        image: nginx 
