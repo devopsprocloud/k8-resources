@@ -15,7 +15,7 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: taint
+  name: toleration
 spec:
 # list of containers
   containers:
