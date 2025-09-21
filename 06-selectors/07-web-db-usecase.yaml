@@ -25,3 +25,46 @@ spec:
       containers:
       - name: redis-server
         image: nginx 
+
+--- 
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-server
+spec:
+  selector:
+    matchLabels:
+      app: web-store
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: web-store
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - web-store
+            topologyKey: "kubernetes.io/hostname"
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values: 
+                - store
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: web-app
+        image: nginx
+
+
+# First web pod replica will go and run where redi pod runs and match the labels with store 
+# Second web pod replica will go and run where redi pod runs and match the labels with store 
