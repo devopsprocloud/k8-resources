@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: affinity-pod3
+  labels: 
+    name: affinity-pod3
+spec:
+# list of containers
+  containers:
+  - name: affinity-pod3
+    image: nginx
+    ports:
+    - containerPort: 80
+  
+--- 
+
