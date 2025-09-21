@@ -12,14 +12,14 @@ spec:
           - key: project
             operator: In
             values:
-            - devops
+            - devops1
       - weight: 50
         preference:
           matchExpressions:
           - key: project
             operator: In
             values:
-            - roboshop
+            - roboshop1
   containers:
   - name: with-node-affinity
     image: nginx
