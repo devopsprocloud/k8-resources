@@ -14,3 +14,21 @@ spec:
   
 --- 
 
+apiVersion: v1
+kind: Pod
+metadata:
+  name: affinity-pod4
+spec:
+  affinity:
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: name
+            operator: NotIn
+            values:
+            - affinity-pod3
+        topologyKey: topology.kubernetes.io/zone
+  containers:
+  - name: affinity-pod4
+    image: nginx
